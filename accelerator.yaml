@@ -1,0 +1,294 @@
+accelerator:
+  displayName: TAP Initialize
+
+  options:
+    - name: workshopTitle
+      inputType: text
+      label: Workshop Title
+      defaultValue: ""
+      required: true
+      description: The title for the workshop that will show up in the catalog
+    - name: workshopDescription
+      inputType: text
+      label: Workshop Description
+      defaultValue: ""
+      required: true
+      description: The short description for the workshop that will show up in the catalog
+    - name: workshopFilesUrl
+      inputType: text
+      label: Workshop Git Source
+      defaultValue: "github.com/vrabbi-tap/learning-center-sample"
+      required: true
+      description: the git url (without protocol) for pulling down the files of the session
+    - name: difficulty
+      inputType: select
+      label: Build Mechanism
+      description: The level of the course you are building
+      choices:
+      - text: "Beginner"
+        value: beginner
+      - text: "Intermidiate"
+        value: intermidiate
+      - text: "Advanced"
+        value: advanced
+      - text: "Extreme"
+        value: extreme
+      defaultValue: beginner
+      required: true
+    - name: duration
+      inputType: text
+      validationRegex: "^[0-9]+[hsm]$"
+      description: Time in the golang time format (eg 15m, 1h etc.) the course is capped at.
+      label: Session Duration
+      defaultValue: "30m"
+    - name: maxSessions
+      label: Maximum Concurrent Sessions allowed
+      dataType: number
+      defaultValue: 10
+      description: Set this value to the maximum amount of sessions you want to be able to have running in parallel for this workshop
+      required: true
+    - name: namespaceBudget
+      label: Per Session Namespace Resource Quota
+      inputType: select
+      choices:
+      - text: "Small (CPU: 100m RAM: 1Gi)"
+        value: small 
+      - text: "Medium (CPU: 2000m RAM: 2Gi)"
+        value: medium
+      - text: "Large (CPU: 4000m RAM: 4Gi)"
+        value: large
+      - text: "X Large (CPU: 8000m RAM: 8Gi)"
+        value: x-large
+      - text: "2X Large (CPU: 8000m RAM: 12Gi)"
+        value: xx-large
+      - text: "3X Large (CPU: 8000m RAM: 16Gi)"
+        value: xxx-large
+      required: true
+      defaultValue: small
+      description: Kubernetes Resource Quota size to apply for each sessions dedicated namespace
+    - name: memoryResources
+      label: Session Host Memory Requests
+      defaultValue: 1Gi
+      inputType: select
+      choices:
+      - text: "1 GB"
+        value: 1Gi
+      - text: "2 GB"
+        value: 2Gi
+      - text: "5 GB"
+        value: 5Gi
+      description: Memory Request value for the sessions container. Typically 1 GB is more then enough.
+      required: true
+    - name: enableTerminal
+      label: Enable Terminal
+      description: Enables an embedded terminal in the workshop environment
+      inputType: checkbox
+      dataType: boolean
+      defaultValue: true
+    - name: terminalLayout
+      inputType: select
+      choices:
+      - text: "1 Terminal"
+        value: default
+      - text: "2 Terminals"
+        value: split
+      - text: "3 Terminals"
+        value: split/2
+      - text: "None by default (can be added during workshop)"
+        value: none
+      - text: "Bellow Dashboards (no dedicated page in workshop)"
+        value: lower
+      defaultValue: split
+      label: Terminal Layout
+      dependsOn:
+        name: enableTerminal
+        value: true
+    - name: enableEditor
+      label: Enable Editor
+      description: Enables an embedded VSCode instance in the workshop environment
+      inputType: checkbox
+      dataType: boolean
+      defaultValue: true
+    - name: enableConsole
+      label: Enable Console
+      description: Enables an embedded kubernetes console in the workshop environment
+      inputType: checkbox
+      dataType: boolean
+      defaultValue: true
+    - name: consoleVendor
+      label: Console Type
+      description: The type of console you want deployed for each session
+      inputType: select
+      choices:
+      - text: "Kubernetes Dashboard"
+        value: kubernetes
+      - text: "Octant"
+        value: octant
+      defaultValue: octant
+      dependsOn:
+        name: enableConsole
+        value: true
+    - name: enableRegistry
+      label: Enable Registry
+      description: Deploys a container registry for each workshop session to allow pushing and pulling images from it during the workshop
+      inputType: checkbox
+      dataType: boolean
+      defaultValue: false
+    - name: registryStorage
+      label: Registry Storage Size (Gi)
+      description: The amount of storage to allocate to the registries PVC for each session
+      dataType: number
+      defaultValue: 5
+      dependsOn:
+        name: enableRegistry
+        value: true
+    - name: registryMemory
+      label: Registry Memory Request Size (Mi)
+      description: The amount of memory to allocate to the registry pod for each session
+      dataType: number
+      defaultValue: 768
+      dependsOn:
+        name: enableRegistry
+        value: true
+    - name: enableDocker
+      label: Enable Docker
+      description: Adds a docker socket to the environment to allow for building and running containers using docker in the workshop environment
+      inputType: checkbox
+      dataType: boolean
+      defaultValue: false
+    - name: dockerStorage
+      label: Docker Engine Storage Size (Gi)
+      description: The amount of storage to allocate to the docker socket container for each session
+      dataType: number
+      defaultValue: 5
+      dependsOn:
+        name: enableDocker
+        value: true
+    - name: dockerMemory
+      label: Docker Engine Memory Request Size (Mi)
+      description: The amount of memory to allocate to the docker socket container for each session
+      dataType: number
+      defaultValue: 768
+      dependsOn:
+        name: enableDocker
+        value: true
+    - name: exercises
+      dataType: [string]
+      required: true
+      description: The names of the exercises in your workshop
+      label: List Of Workshop Exercise Names
+engine:
+  merge:
+    - include: ["resources/workshop.yaml"]
+      chain:
+      - type: YTT
+    - include: ["resources/training-portal.yaml"]
+      chain:
+      - type: YTT
+    - include: ["workshop/workshop.yaml"]
+      chain:
+      - type: YTT
+    - include: ["workshop/modules.yaml"]
+      chain:
+      - type: YTT
+    - include: ["workshop/content/exercises/0.md"]
+      condition: "#exercises.size() > 0"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[0]"
+      - type: RewritePath
+        regex: workshop/content/exercises/0.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[0].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/1.md"]
+      condition: "#exercises.size() > 1"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[1]"
+      - type: RewritePath
+        regex: workshop/content/exercises/1.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[1].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/2.md"]
+      condition: "#exercises.size() > 2"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[2]"
+      - type: RewritePath
+        regex: workshop/content/exercises/2.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[2].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/3.md"]
+      condition: "#exercises.size() > 3"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[3]"
+      - type: RewritePath
+        regex: workshop/content/exercises/3.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[3].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/4.md"]
+      condition: "#exercises.size() > 4"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[4]"
+      - type: RewritePath
+        regex: workshop/content/exercises/4.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[4].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/5.md"]
+      condition: "#exercises.size() > 5"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[5]"
+      - type: RewritePath
+        regex: workshop/content/exercises/5.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[5].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/6.md"]
+      condition: "#exercises.size() > 6"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[6]"
+      - type: RewritePath
+        regex: workshop/content/exercises/6.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[6].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/7.md"]
+      condition: "#exercises.size() > 7"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[7]"
+      - type: RewritePath
+        regex: workshop/content/exercises/7.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[7].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/8.md"]
+      condition: "#exercises.size() > 8"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[8]"
+      - type: RewritePath
+        regex: workshop/content/exercises/8.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[8].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/exercises/9.md"]
+      condition: "#exercises.size() > 9"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "replace me"
+          with: "'# ' + #exercises[9]"
+      - type: RewritePath
+        regex: workshop/content/exercises/9.md
+        rewriteTo: "'workshop/content/exercises/' + #exercises[9].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["workshop/content/setup-environment.md","workshop/content/workshop-overview.md","workshop/content/workshop-summary.md","workshop/setupd.d/etup-resources.sh"]

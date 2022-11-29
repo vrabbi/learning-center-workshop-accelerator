@@ -1,0 +1,11 @@
+#@ load("@ytt:data","data")
+---
+name: #@ data.values.artifactId
+modules:
+  activate:
+  - workshop-overview
+  - setup-environment
+  #@ for i in data.values.exercises:
+  - #@ i.replace(" ", "-").lower()
+  #@ end
+  - workshop-summary

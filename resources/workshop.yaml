@@ -1,0 +1,36 @@
+#@ load("@ytt:data","data")
+---
+apiVersion: learningcenter.tanzu.vmware.com/v1beta1
+kind: Workshop
+metadata:
+  name: #@ data.values.artifactId
+spec:
+  vendor: terasky
+  duration: #@ data.values.duration
+  difficulty: #@ data.values.difficulty
+  content:
+    files: #@ data.values.workshopFilesUrl
+  description: #@ data.values.workshopDescription
+  session:
+    resources:
+      memory: #@ data.values.memoryResources
+    applications:
+      console:
+        enabled: #@ data.values.enableConsole
+        vendor: #@ data.values.consoleVendor
+      docker:
+        enabled: #@ data.values.enableDocker
+        memory: #@ data.values.dockerMemory
+        storage: #@ data.values.dockerStorage
+      editor:
+        enabled: #@ data.values.enableEditor
+      registry:
+        enabled: #@ data.values.enableRegistry
+        memory: #@ data.values.registryMemory
+        storage: #@ data.values.registryStorage
+      terminal:
+        enabled: #@ data.values.enableTerminal
+        layout: #@ data.values.terminalLayout
+    namespaces:
+      budget: #@ data.values.namespaceBudget
+  title: #@ data.values.workshopTitle

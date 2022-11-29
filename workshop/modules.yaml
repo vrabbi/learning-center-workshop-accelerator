@@ -1,0 +1,24 @@
+#@ load("@ytt:data","data")
+#@ load("@ytt:template", "template")
+---
+modules:
+  workshop-overview:
+    name: Workshop Overview
+    exit_sign: Setup Environment
+  setup-environment:
+    name: Setup Environment
+    exit_sign: Start Workshop
+  #@ for i in data.values.exercises:
+  #@overlay/match missing_ok=True
+  #@ words = i.replace("-", " ").replace("_", " ").split(" ")
+  #@ name = ""
+  #@ for w in words:
+  #@ name = name + w.capitalize() + " "
+  #@ end
+  #@ name = name.rstrip()
+  #@ path = "exercises/{}".format(i).replace(" ", "-").lower()
+  _: #@ template.replace({path: {"name": name}})
+  #@ end
+  workshop-summary:
+    name: Workshop Summary
+    exit_sign: Finish Workshop

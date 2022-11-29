@@ -1,0 +1,22 @@
+#@ load("@ytt:data","data")
+---
+apiVersion: learningcenter.tanzu.vmware.com/v1beta1
+kind: TrainingPortal
+metadata:
+  name: #@ "{}-portal".format(data.values.artifactId)
+spec:
+  portal:
+    ingress:
+      hostname: #@ "{}-portal".format(data.values.artifactId)
+    registration:
+      enabled: true
+      type: anonymous
+    reserved: 0
+    sessions:
+      maximum: #@ data.values.maxSessions
+    updates:
+      workshop: true
+  workshops:
+  - expires: #@ data.values.duration
+    name: #@ data.values.artifactId
+    orphaned: #@ data.values.duration
