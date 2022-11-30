@@ -20,14 +20,14 @@ spec:
         vendor: #@ data.values.consoleVendor
       docker:
         enabled: #@ data.values.enableDocker
-        memory: #@ data.values.dockerMemory
-        storage: #@ data.values.dockerStorage
+        memory: #@ "{}Mi".format(data.values.dockerMemory)
+        storage: #@ "{}Gi".format(data.values.dockerStorage)
       editor:
         enabled: #@ data.values.enableEditor
       registry:
         enabled: #@ data.values.enableRegistry
-        memory: #@ data.values.registryMemory
-        storage: #@ data.values.registryStorage
+        memory: #@ "{}Mi".format(data.values.registryMemory)
+        storage: #@ "{}Gi".format(data.values.registryStorage)
       terminal:
         enabled: #@ data.values.enableTerminal
         layout: #@ data.values.terminalLayout
