@@ -6,6 +6,6 @@ modules:
   - workshop-overview
   - setup-environment
   #@ for i in data.values.exercises:
-  - #@ i.replace(" ", "-").lower()
+  - #@ "expercies/{}".format(i.replace(" ", "-").lower())
   #@ end
   - workshop-summary
