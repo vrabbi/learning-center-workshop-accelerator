@@ -291,4 +291,4 @@ engine:
       - type: RewritePath
         regex: workshop/content/exercises/9.md
         rewriteTo: "'workshop/content/exercises/' + #exercises[9].replaceAll(' ', '-').toLowerCase() + '.md'"
-    - include: ["workshop/content/setup-environment.md","workshop/content/workshop-overview.md","workshop/content/workshop-summary.md","workshop/setupd.d/setup-resources.sh"]
+    - include: ["workshop/content/setup-environment.md","workshop/content/workshop-overview.md","workshop/content/workshop-summary.md","workshop/setup.d/setup-resources.sh"]
