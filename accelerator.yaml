@@ -324,6 +324,11 @@ engine:
       - type: RewritePath
         regex: workshop/content/exercises/9.md
         rewriteTo: "'workshop/content/exercises/' + #exercises[9].replaceAll(' ', '-').toLowerCase() + '.md'"
+    - include: ["WORKSHOP_README.md"]
+      chain:
+      - type: RewritePath
+        regex: WORKSHOP_README.md
+        rewriteTo: "'README.md'"
     - include: ["workshop/setup.d/connect-vcluster.sh"]
       condition: "#useVcluster"
     - include: ["workshop/setup.d/install-carvel-tools.sh"]
