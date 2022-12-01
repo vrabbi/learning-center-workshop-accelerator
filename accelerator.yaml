@@ -330,4 +330,4 @@ engine:
       condition: "#installCarvelTools"
     - include: ["workshop/setup.d/install-kubectl-plugins.sh"]
       condition: "#installKrewAndPlugins"
-    - include: ["workshop/content/setup-environment.md","workshop/content/workshop-overview.md","workshop/content/workshop-summary.md","workshop/setup.d/setup-resources.sh"]
+    - include: ["workshop/content/setup-environment.md","workshop/content/workshop-overview.md","workshop/content/workshop-summary.md","workshop/setup.d/setup-resources.sh","BUILDING_AN_IMAGE_DOC.md","TRAINING_PORTAL_RESOURCE_CONFIG_DOC.md","WORKSHOP_CONFIG_DOC.md","WORKSHOP_IMAGES_DOC.md","WORKSHOP_INSTRUCTIONS_DOC.md","WORKSHOP_RESOURCE_CONFIG_DOC.md"]
