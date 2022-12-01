@@ -2,7 +2,7 @@
 
 There are two main parts to the configuration for a workshop. The first specifies the structure of the workshop content and the second defines the runtime requirements for deploying the workshop.
 
-## <a id="content-structure"></a> Specifying structure of the content
+##  Specifying structure of the content
 
 There are multiple ways you can configure a workshop to specify the structure of the content. The sample workshops use YAML files.
 
@@ -61,7 +61,7 @@ When the user uses the training portal, the training portal overrides this envir
 
 VMware recommends that for the last page, the `exit_sign` be set to "Finish Workshop" and `exit_link` not be specified. This enables the destination to be controlled from the workshop environment or training portal.
 
-## <a id="specify-runtime-config"></a> Specifying the runtime configuration
+##  Specifying the runtime configuration
 
 You can deploy workshop images directly to a container runtime. The Learning Center Operator is provided to manage deployments into a Kubernetes cluster. You define the configuration for the Learning Center Operator with a `Workshop` CRD in the `resources/workshop.yaml` file:
 

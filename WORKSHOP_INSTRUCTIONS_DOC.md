@@ -2,7 +2,7 @@
 
 Individual module files making up the workshop instructions can use either [Markdown](https://github.github.com/gfm/) or [AsciiDoc](http://asciidoc.org/) markup formats. The extension used on the file should be `.md` or `.adoc`, corresponding to which formatting markup style you use.
 
-## <a id="annotation-of-executable"></a>Annotation of executable commands
+## Annotation of executable commands
 
 In conjunction with the standard Markdown and AsciiDoc, you can apply additional annotations to code blocks. The annotations indicate that a user can click the code block and have it copied to the terminal and executed.
 
@@ -57,7 +57,7 @@ When the user clicks on this code block, the command running in the correspondin
 
 >**Note** Using the special string `<ctrl+c>` is deprecated, and you must use the `terminal:interrupt` clickable action instead.
 
-## <a id="annotation-of-text"></a>Annotation of text to be copied
+## Annotation of text to be copied
 
 To copy the content of the code block into the paste buffer instead of running the command, you can use:
 
@@ -97,7 +97,7 @@ For `copy` only, to mark an inline code section within a paragraph of text as co
 Text to `copy`\{{copy}}.
 ```
 
-## <a id="extensible-click-actions"></a>Extensible clickable actions
+## Extensible clickable actions
 
 The preceding means to annotate code blocks were the original methods used to indicate code blocks to be executed or copied when clicked. To support a growing number of clickable actions with different customizable purposes, annotation names are now name-spaced. The preceding annotations are still supported, but the following are now recommended, with additional options available to customize the way the actions are presented.
 
@@ -230,11 +230,11 @@ command: echo "Execute command."
 ----
 ```
 
-## <a id="supported-editor"></a>Supported workshop editor
+## Supported workshop editor
 
 Learning Center currently **only** supports the code-server v4.4.0 of VS Code as an editor in workshops.
 
-## <a id="click-actions-dashboard"></a>Clickable actions for the dashboard
+## Clickable actions for the dashboard
 
 In addition to the clickable actions related to the terminal and copying of text to the paste buffer, other actions are available for controlling the dashboard and opening URL links.
 
@@ -327,7 +327,7 @@ The user cannot delete dashboards corresponding to builtin applications provided
 
 Deleting a custom dashboard including a terminal session does not destroy the underlying terminal session, and the user can reconnect it by creating a new custom dashboard for the same terminal session name.
 
-## <a id="clickable-actions-editor"></a>Clickable actions for the editor
+## Clickable actions for the editor
 
 If the embedded editor is enabled, special actions are available that control the editor.
 
@@ -478,7 +478,7 @@ args:
 ```
 ~~~
 
-## <a id="click-actions-file-dl"></a>Clickable actions for file download
+## Clickable actions for file download
 
 If file downloads are enabled for the workshop, you can use the `files:download-file` clickable action:
 
@@ -490,7 +490,7 @@ path: .kube/config
 
 The action triggers saving the file to the user's local computer, and the file is not displayed in the user's web browser.
 
-## <a id="click-actions-examiner"></a>Clickable actions for the examiner
+## Clickable actions for the examiner
 
 If the test examiner is enabled, special actions are available to run verification checks to verify whether a workshop user has performed a required step. You can trigger these verification checks by clicking on the action, or you can configure them to start running when the page loads.
 
@@ -607,7 +607,7 @@ delay: 1
 ```
 ~~~
 
-## <a id="click-actions-sections"></a>Clickable actions for sections
+## Clickable actions for sections
 
 For optional instructions, or instructions you want to hide until the workshop user is ready for them, you can designate sections to be hidden. When the user clicks the appropriate action, the section expands to show its content. You can use this for examples that initially hide a set of questions or a test at the end of each workshop page.
 
@@ -669,7 +669,7 @@ title: Questions
 
 When the user clicks on this, the action is still marked as completed, but it does not trigger any other action.
 
-## <a id="override-title-desc"></a>Overriding title and description
+## Overriding title and description
 
 Clickable action blocks default to use a title with the prefix dictated by what the action block does. The body of the action block also defaults to use a value commensurate with the action.
 
@@ -687,7 +687,7 @@ The banner of the action block in this example displays "Prefix: Title", with th
 
 >**Note** The description is always displayed as pre-formatted text within the rendered page.
 
-## <a id="escape-code-block-content"></a>Escaping of code block content
+## Escaping of code block content
 
 Because the [Liquid](https://www.npmjs.com/package/liquidjs) template engine is applied to workshop content, you must escape content in code blocks that conflict with the syntactic elements of the Liquid template engine. To escape such elements, you can suspend processing by the template engine for that section of workshop content to ensure it is rendered correctly. Do this by using a Liquid `{% raw %}...{% endraw %}` block.
 
@@ -701,7 +701,7 @@ echo "Execute command."
 
 This has the side effect of preventing interpolation of data variables, so restrict it to only the required scope.
 
-## <a id="interpolate-data-vars"></a>Interpolation of data variables
+## Interpolation of data variables
 
 When creating page content, you can reference a number of predefined data variables. The values of the data variables are substituted into the page when rendered in the user's browser.
 
@@ -734,7 +734,7 @@ When the workshop environment is hosted in Kubernetes and provides access to the
 
 >**Note** An older version of the rendering engine required that data variables be surrounded on each side with the character `%`. This is still supported for backwards compatibility, but VMware recommends you use matched pairs of brackets instead.
 
-## <a id="add-custom-data-variables"></a>Adding custom data variables
+## Adding custom data variables
 
 You can introduce your own data variables by listing them in the `workshop/modules.yaml` file. A data variable is defined as having a default value, but the value is overridden if an environment variable of the same name is defined.
 
@@ -787,7 +787,7 @@ This JavaScript code is loaded and the `initialize()` function called to set up 
 
 Because it is JavaScript, you can write any code to query process environment variables and set data variables based on those. This might include creating composite values constructed from multiple environment variables. You can even download data variables from a remote host.
 
-## <a id="pass-env-vars"></a>Passing environment variables
+## Passing environment variables
 
 You can pass environment variables, including remapping of variable names, by setting your own custom data variables. If you don't need to set default values or remap the name of an environment variable, you can instead reference the name of the environment variable directly. You must prefix the name with `ENV_` when using it.
 
@@ -797,7 +797,7 @@ For example, to display the value of the `KUBECTL_VERSION` environment variable 
 \{{ ENV_KUBECTL_VERSION }}
 ```
 
-## <a id="handling-embedded-url"></a>Handling embedded URL links
+## Handling embedded URL links
 
 You can include URLs in workshop content. This can be the literal URL, or the Markdown or AsciiDoc syntax for including and labelling a URL. What happens when a user clicks on a URL depends on the specific URL.
 
@@ -809,7 +809,7 @@ You can define a URL where components of the URL are provided by data variables.
 https://myapp-\{{ session_namespace }}.\{{ ingress_domain }}
 ```
 
-## <a id="cond-rendering-content"></a>Conditional rendering of content
+## Conditional rendering of content
 
 Rendering pages is in part handled by the [Liquid](https://www.npmjs.com/package/liquidjs) template engine. So you can use any constructs the template engine supports for conditional content:
 
@@ -822,7 +822,7 @@ Rendering pages is in part handled by the [Liquid](https://www.npmjs.com/package
 {% endif %}
 ```
 
-## <a id="embed-custom-html"></a>Embedding custom HTML content
+## Embedding custom HTML content
 
 Custom HTML can be embedded in the workshop content by using the appropriate mechanism provided by the content rendering engine used.
 

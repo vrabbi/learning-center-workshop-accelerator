@@ -2,7 +2,7 @@
 
 The `TrainingPortal` custom resource triggers the deployment of a set of workshop environments and a set number of workshop instances.
 
-## <a id="specify-workshop-defs"></a> Specifying the workshop definitions
+##  Specifying the workshop definitions
 
 You run multiple workshop instances to perform training to a group of people by creating the workshop environment and then creating each workshop instance. The `TrainingPortal` workshop resource bundles that up as one step.
 
@@ -30,7 +30,7 @@ When the training portal is created, it:
 - Creates any workshop instances required to be created initially for each workshop.
 - Deploys a web portal for attendees of the training to access their workshop instances.
 
-## <a id="limit-number-of-sessions"></a>Limit the number of sessions
+## Limit the number of sessions
 
 When defining the training portal, you can set a limit on the workshop sessions that can be run concurrently. Set this limit by using the `portal.sessions.maximum` property:
 
@@ -52,7 +52,7 @@ When you specify this, the maximum capacity of each workshop is set to the maxim
 
 If you do not set `portal.sessions.maximum`, you must set the capacity for each individual workshop as detailed in the following section. In only setting the capacities of each workshop and not an overall maximum for sessions, you cannot share the overall capacity of the training portal across multiple workshops.
 
-## <a id="cap-individual-workshops"></a> Capacity of individual workshops
+##  Capacity of individual workshops
 
 When you have more than one workshop, you can want to limit how many instances of each workshop you can have so that they cannot grow to the maximum number of sessions for the whole training portal. This means you can stop a specific workshop from using all of the capacity of the training portal. To do this, set the `capacity` field under the entry for the workshop:
 
@@ -74,7 +74,7 @@ spec:
 
 The value of `capacity` limits the number of workshop sessions for a specific workshop to that value. It must be less than or equal to the maximum number of workshops sessions for the portal, because the latter always sets the absolute limit.
 
-## <a id="set-reserved-ws-instances"></a> Set reserved workshop instances
+##  Set reserved workshop instances
 
 By default one instance of each of the listed workshops is created so when the initial user requests that workshop, it's available for use immediately.
 
@@ -104,7 +104,7 @@ You can set the value of `reserved` to 0 if you never want any reserved instance
 
 When workshop instances are always created on demand, the oldest reserved instance is terminated to allow a new session of a desired workshop to be created. This also happens when reserved instances tie up capacity that could be used for a new session of another workshop. This occurs if any caps for specific workshops are met.
 
-## <a id="override-init-num-session"></a> Override initial number of sessions
+##  Override initial number of sessions
 
 The initial number of workshop instances created for each workshop is specified by `reserved` or 1 if the setting hasn't been provided.
 
@@ -125,7 +125,7 @@ spec:
     reserved: 5
 ```
 
-## <a id="set-defaults-for-ws"></a> Setting defaults for all workshops
+##  Setting defaults for all workshops
 
 If you have a list of workshops, and they all must be set with the same values for `capacity`, `reserved`, and `initial`, rather than add settings to each, you can set defaults to apply to all workshops under the `portal` section:
 
@@ -148,7 +148,7 @@ spec:
 
 
 
-## <a id="set-user-caps"></a>Set caps on individual users
+## Set caps on individual users
 
 By default a single user can run more than one workshop at a time. You can cap this to ensure that workshops run only one at a time. This prevents a user from wasting resources by starting more than one workshop and only working on one without shutting the other down.
 
@@ -194,7 +194,7 @@ spec:
     reserved: 4
 ```
 
-## <a id="expiring-of-ws-sessions"></a>Expiration of workshop sessions
+## Expiration of workshop sessions
 
 After you reach the maximum capacity, no more workshops sessions can be created. After a workshop session is allocated to a user, it cannot be reassigned to another user.
 
@@ -247,7 +247,7 @@ Avoid this setting for supervised workshops where the whole event only lasts a c
 
 The `expires` and `orphaned` settings can also be set against `portal` to apply them to all workshops.
 
-## <a id="updates-to-ws-env"></a> Updates to workshop environments
+##  Updates to workshop environments
 
 The list of workshops for an existing training portal can be changed by modifying the training portal definition applied to the Kubernetes cluster.
 
@@ -283,7 +283,7 @@ When using this option, use the `portal.sessions.maximum` setting to limit the n
 
 Overall, VMware recommends updating workshop environments when workshop definitions change only in development environments when working on workshop content. This is an especially good practice until you are familiar with how the training portal replaces existing workshop environments, and the resource implications of having old and new instances of a workshop environment running at the same time.
 
-## <a id="override-ingress-domain"></a>Override the ingress domain
+## Override the ingress domain
 
 To access a workshop instance using a public URL, specify an ingress domain. If an ingress domain isn't specified, the default ingress domain that the Learning Center Operator is configured with is used.
 
@@ -361,7 +361,7 @@ spec:
     reserved: 1
 ```
 
-## <a id="override-portal-hostname"></a>Override the portal host name
+## Override the portal host name
 
 The default host name given to the training portal is the name of the resource with `-ui` suffix, followed by the domain specified by the resource or the default inherited from the configuration of the Learning Center Operator.
 
@@ -386,7 +386,7 @@ spec:
 
 This causes the host name to be `labs.learningcenter.tanzu.vmware.com` rather than the default generated name for this example of `lab-markdown-sample-ui.learningcenter.tanzu.vmware.com`.
 
-## <a id="set-extra-env-variables"></a>Set extra environment variables
+## Set extra environment variables
 
 To override any environment variables for workshop instances created for a specific work, provide the environment variables in the `env` field of that workshop:
 
@@ -419,7 +419,7 @@ Values of fields in the list of resource objects can reference a number of prede
 
 The syntax for referencing one of the parameters is `$(parameter_name)`.
 
-## <a id="override-portal-creds"></a>Override portal credentials
+## Override portal credentials
 
 When a training portal is deployed, the user name for the admin and robot accounts uses the defaults of `learningcenter` and `robot@learningcenter`. The passwords for each account are randomly set.
 
@@ -486,7 +486,7 @@ spec:
     reserved: 1
 ```
 
-## <a id="control-reg-type"></a>Control registration type
+## Control registration type
 
 By default the training portal web interface presents a registration page for users to create an account before selecting a workshop. If you want to allow only the administrator to log in, you can deactivate the registration page. Do this if you are using the REST API to create and allocate workshop sessions from a separate application:
 
@@ -526,7 +526,7 @@ spec:
 When a user visits the training portal home page in anonymous mode, an account for that user is
 automatically created and the user is logged in.
 
-## <a id="specify-event-access-code"></a> Specify an event access code
+##  Specify an event access code
 
 When deploying the training portal with anonymous access or open registration, anyone who knows the URL can access workshops. To at least restrict access to those who know a common event access code or password, you can set `portal.password`:
 
@@ -546,7 +546,7 @@ spec:
 
 When anonymous access is enabled and the training portal URL is accessed, users are asked to enter an event access code before they are redirected to the list of workshops or to the login page.
 
-## <a id="make-list-of-ws-public"></a>Make a list of workshops public
+## Make a list of workshops public
 
 By default the index page providing the catalog of available workshop images is only available after a user has logged in, either through a registered account or as an anonymous user.
 
@@ -571,7 +571,7 @@ By default the catalog has visibility set to `private`. Use `public` to expose i
 
 This also makes it possible to access the list of available workshops from the catalog through the REST API, without authenticating against the REST API.
 
-## <a id="use-external-list-of-ws"></a>Use an external list of workshops
+## Use an external list of workshops
 
 If you are using the training portal with registration deactivated, and you are using the REST API from a separate website to control creation of sessions, you can specify an alternate URL for providing the list of workshops.
 
@@ -600,7 +600,7 @@ If you supply this property, passing the `index_url` when creating a workshop se
 
 If a user has logged into the training portal as the admin user, the user is not redirected to the external site and still sees the training portal's list of workshops.
 
-## <a id="override-prtl-title-logo"></a>Override portal title and logo
+## Override portal title and logo
 
 By default the web interface for the training portal displays a generic Learning Center logo and a page title of "Workshops." To override these, you can set `portal.title` and `portal.logo`:
 
@@ -621,7 +621,7 @@ spec:
 
 The `logo` field should be a graphical image provided in embedded data URI format. The image is displayed with a fixed height of "40px". The field can also be a URL for an image stored on a remote web server.
 
-## <a id="allow-portal-in-iframe"></a>Allow the portal in an iframe
+## Allow the portal in an iframe
 
 By default it is prohibited to display the web interface for the training portal in an iframe of another web site, because of content security policies applying to the training portal website.
 
@@ -648,7 +648,7 @@ The property is a list of hosts, not a single value. To use a URL for the traini
 
 Because the sites that embed iframes must be secure and use HTTPS, they cannot use plain HTTP. Browser policies prohibit promoting cookies to an insecure site when embedding using an iframe. If cookies cannot be stored, a user cannot authenticate against the workshop session.
 
-## <a id="collect-analytics-on-ws"></a>Collect analytics on workshops
+## Collect analytics on workshops
 
 To collect analytics data on usage of workshops, supply a webhook URL. When you supply a webhook URL, events are posted to the webhook URL, including:
 
@@ -732,7 +732,7 @@ The `user` field is the same portal user identity returned by the REST API when 
 
 The event stream only produces events for things as they happen. For a snapshot of all current workshop sessions, use the REST API to request the catalog of available workshop environments, enabling the inclusion of current workshop sessions.
 
-## <a id="using-google-analytics"></a>Track using Google Analytics
+## Track using Google Analytics
 
 To record analytics data on usage of workshops by using Google Analytics, enable tracking by supplying a tracking ID for Google Analytics:
 

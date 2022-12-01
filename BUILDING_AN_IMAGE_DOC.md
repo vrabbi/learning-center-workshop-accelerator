@@ -2,7 +2,7 @@
 
 This topic explains how to include an extra system, third-party tool, or configuration in your image by bundling workshop content from the Learning Center workshop base image. The following sample workshop template provides a `Dockerfile`.
 
-## <a id="structure-of-dockerfile"></a>Structure of the Dockerfile
+## Structure of the Dockerfile
 
 The structure of the `Dockerfile` in the sample workshop template is:
 
@@ -26,7 +26,7 @@ To customize your `Dockerfile`:
   - You can ignore other files or directories from the repository, by listing them in the `.dockerignore` file.
   - You can include `RUN` statements in the `Dockerfile` to run custom-build steps, but the `USER` inherited from the base image has user ID `1001` and is not the `root` user.
 
-## <a id="base-images-version-tags"></a>Base images and version tags
+## Base images and version tags
 
 The sample `Dockerfile` provided above and the GitHub repository workshop templates reference the workshop base image as follows:
 
@@ -35,7 +35,7 @@ registry.tanzu.vmware.com/tanzu-application-platform/tap-packages@sha256:a8870aa
 ```
 
 
-## <a id="custom-workshop-base-imgs"></a>Custom workshop base images
+## Custom workshop base images
 
 The `base-environment` workshop images include language run times for Node.js and Python. If you need a different language runtime or a different version of a language runtime, you must create a custom workshop base image which includes the environment you need. This custom workshop image is derived from `base-environment` but includes extra runtime components.
 
@@ -57,7 +57,7 @@ ENV PATH=/opt/java/bin:/opt/gradle/bin:/opt/maven/bin:$PATH \
 ```
 
 
-## <a id="install-extra-system-pkgs"></a>Installing extra system packages
+## Installing extra system packages
 
 Installing extra system packages requires that you run the installation as `root`. You must switch the user commands before running the command, and then switch the user back to user ID of `1001`.
 
@@ -86,7 +86,7 @@ RUN HOME=/root && \
 USER 1001
 ```
 
-## <a id="install-third-party-pkgs"></a>Installing third-party packages
+## Installing third-party packages
 
 If you are not using system packaging tools to install extra packages, but are manually downloading packages and optionally compiling them to binaries, it is better to do this as the default user and not `root`.
 

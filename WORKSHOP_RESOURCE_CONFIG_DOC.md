@@ -2,7 +2,7 @@
 
 The `Workshop` custom resource defines a workshop.
 
-## <a id="workshop-title-desc"></a> Workshop title and description
+##  Workshop title and description
 
 Each workshop must have the `title` and `description` fields. If you do not supply these fields, the `Workshop` resource is rejected when you attempt to load it into the Kubernetes cluster.
 
@@ -78,7 +78,7 @@ When referring to a workshop definition after you load it into a Kubernetes clus
 value of the `name` field given in the metadata. To experiment with different variations of a workshop,
 copy the original workshop definition YAML file and change the value of `name`. Make your changes and load it into the Kubernetes cluster.
 
-## <a id="download-workshop-content"></a> Downloading workshop content
+##  Downloading workshop content
 
 You can download workshop content when you create the workshop instance. If the amount of
 content is moderate, the download doesn't increase startup time for the workshop instance.
@@ -205,7 +205,7 @@ root directory, prefix it with `./`:
 ./resources
 ```
 
-## <a id="cntnr-img-for-workshop"></a> Container image for the workshop
+##  Container image for the workshop
 
 When you bundle the workshop content into a container image, the `content.image` field must specify
 the image reference identifying the location of the container image that you will deploy for the workshop
@@ -279,7 +279,7 @@ If required, you can remap the short names in the `SystemProfile` configuration 
 Learning Center Operator. You can map additional short names to your own custom workshop base images
 for your own deployment of the Learning Center Operator, and with any of your own workshops.
 
-## <a id="set-env-vars"></a> Setting environment variables
+##  Setting environment variables
 
 To set or override environment variables for the workshop instance, you can supply the
 `session.env` field:
@@ -328,7 +328,7 @@ Use the `session.env` field to override environment variables only when they are
 To set or override an environment for a specific workshop environment, set environment variables in the `WorkshopEnvironment`
 custom resource for the workshop environment instead.
 
-## <a id="override-available-memory"></a> Overriding the memory available
+##  Overriding the memory available
 
 By default the container the workshop environment runs in is allocated 512Mi.
 If the editor is enabled, a total of 1Gi is allocated.
@@ -352,7 +352,7 @@ spec:
       memory: 2Gi
 ```
 
-## <a id="mount-persistent-volume"></a> Mounting a persistent volume
+##  Mounting a persistent volume
 
 In circumstances where a workshop needs persistent storage to ensure no loss of work, you can request a persistent volume be mounted into the workshop container after the workshop environment container is stopped and restarted:
 
@@ -376,7 +376,7 @@ workshop content bundled with the image, an init container is automatically conf
 which copies the contents of the home directory to the persistent volume before the persistent volume
 is mounted on top of the home directory.
 
-## <a id="rsrc-budget-namespaces"></a> Resource budget for namespaces
+##  Resource budget for namespaces
 
 In conjunction with each workshop instance, a namespace is created during the workshop.
 From the terminal of the workshop, you can deploy dashboard applications into the namespace through the Kubernetes
@@ -505,7 +505,7 @@ This budget setting and the memory values are distinct from the amount of memory
 workshop environment runs in. To change how much memory is available to the workshop
 container, set the `memory` setting under `session.resources`.
 
-## <a id="patch-workshop-deployment"></a> Patching workshop deployment
+##  Patching workshop deployment
 
 In order to set or override environment variables, you can provide `session.env`.
 To make other changes to the Pod template for the deployment used to create the workshop
@@ -548,7 +548,7 @@ If there is no matching item in the destination array, the item in the source ar
 
 This means an array doesn't outright replace an existing array, but a more intelligent merge is performed of elements in the array.
 
-## <a id="create-session-resources"></a> Creation of session resources
+##  Creation of session resources
 
 When a workshop instance is created, the deployment running the workshop dashboard is created in the
 namespace for the workshop environment. When more than one workshop instance is created under that
@@ -648,7 +648,7 @@ workshop instance, and you do not get a clash with a resource for a different wo
 
 For examples of making use of the available parameters, see the following sections.
 
-## <a id="override-def-rbac-rules"></a> Overriding default role-based access control (RBAC) rules
+##  Overriding default role-based access control (RBAC) rules
 
 By default the service account created for the workshop instance has `admin` role access to the
 session namespace created for that workshop instance. This enables the service account to be used to
@@ -758,7 +758,7 @@ In this case, the name of the cluster role binding resource embeds `$(session_na
 name is unique to the workshop instance and doesn't overlap with a binding for a different workshop
 instance.
 
-## <a id="run-user-cntnrs-as-root"></a> Running user containers as root
+##  Running user containers as root
 
 In addition to RBAC, which controls what resources a user can create and work with, Pod security
 policies are applied to restrict what Pods/containers a user deploys can do.
@@ -790,7 +790,7 @@ spec:
 This setting applies to the primary session namespace and any secondary namespaces
 created.
 
-## <a id="create-extra-namespaces"></a> Creating additional namespaces
+##  Creating additional namespaces
 
 For each workshop instance, a primary session namespace is created. You can deploy or pre-deploy applications into this namespace as part of the workshop.
 
@@ -948,7 +948,7 @@ To set the security policy for a specific namespace other than the primary sessi
 namespace, you can add the annotation `learningcenter.tanzu.vmware.com/session.security.policy` in
 the `Namespace` resource metadata and set the value to `nonroot`, `anyuid`, or `custom` as necessary.
 
-## <a id="shared-workshop-resources"></a> Shared workshop resources
+##  Shared workshop resources
 
 Adding a list of resources to `session.objects` causes the given resources to be created for
 each workshop instance, whereas namespaced resources default to being created in the session namespace for a workshop instance.
@@ -998,7 +998,7 @@ policy set up by the Learning Center. If this isn't used and the cluster imposes
 default Pod security policy, your deployment might not work, especially if any image runs as
 `root`.
 
-## <a id="workshop-pod-security-pol"></a> Workshop pod security policy
+##  Workshop pod security policy
 
 The pod for the workshop session is set up with a pod security policy that restricts what you can do
 from containers in the pod. The nature of the applied pod security policy is adjusted when
@@ -1125,7 +1125,7 @@ This ensures it takes precedence over any global default Pod security policy suc
 `vmware-system-tmc-restricted`, no matter what the name of the global policy default.
 
 
-## <a id="custom-sec-pol-user-cont"></a> Custom security policies for user containers
+##  Custom security policies for user containers
 
 You can also set the value of the `session.namespaces.security.policy` setting as
 `custom`. This gives you more fine-grained control of the security policy applied to the
@@ -1213,7 +1213,7 @@ You can also do this on secondary namespaces by either changing the
 `learningcenter.tanzu.vmware.com/session.security.policy: custom` annotation.
 
 
-## <a id="def-extra-ingress-points"></a> Defining additional ingress points
+##  Defining additional ingress points
 
 If running additional background applications, by default they are only accessible to other
 processes within the same container. For an application to be accessible to a user through their web browser,
@@ -1337,7 +1337,7 @@ Access controls enforced by the workshop environment or training portal protect 
 If you use the training portal, this must be transparent.
 Otherwise, supply any login credentials for the workshop again when prompted by your web browser.
 
-## <a id="external-ws-instructions"></a> External workshop instructions
+##  External workshop instructions
 
 In place of using workshop instructions provided with the workshop content, you can use externally
 hosted instructions instead. To do this set `sessions.applications.workshop.url` to the URL of an
@@ -1399,7 +1399,7 @@ spec:
 In this case `environment.objects` of the workshop `spec` must include resources to deploy the
 application hosting the instructions and expose it through an appropriate ingress.
 
-## <a id="deactivate-ws-instructions"></a> Deactivating workshop instructions
+##  Deactivating workshop instructions
 
 The aim of the workshop environment is to provide instructions for a workshop that users can follow.
 If you want instead to use the workshop environment as a development environment or as an
@@ -1424,7 +1424,7 @@ spec:
         enabled: false
 ```
 
-## <a id="enable-kubernetes-console"></a> Enabling the Kubernetes console
+##  Enabling the Kubernetes console
 
 By default the Kubernetes console is not enabled. To enable it and make it available
 through the web browser when accessing a workshop, add a `session.applications.console`
@@ -1468,7 +1468,7 @@ spec:
 
 When `vendor` is not set, `kubernetes` is assumed.
 
-## <a id="enable-integrated-editor"></a> Enabling the integrated editor
+##  Enabling the integrated editor
 
 By default the integrated web based editor is not enabled. To enable it and make it
 available through the web browser when accessing a workshop, add a
@@ -1508,7 +1508,7 @@ This installs the extensions into `$HOME/.config/code-server/extensions`.
 If downloading extensions yourself and unpacking them or extensions are part of your Git repository,
 you can instead locate them in the `workshop/code-server/extensions` directory.
 
-## <a id="enable-workshop-downloads"></a> Enabling workshop downloads
+##  Enabling workshop downloads
 
 You can provide a way for a workshop user to download files as
 part of the workshop content. Enable this by adding the `session.applications.files`
@@ -1557,7 +1557,7 @@ spec:
 When the specified directory is a relative path, it is evaluated relative to the home directory of
 the workshop user.
 
-## <a id="enable-test-examiner"></a> Enabling the test examiner
+##  Enabling the test examiner
 
 The test examiner is a feature that allows a workshop to have verification checks that
 the workshop instructions can trigger. The test examiner is deactivated by default.
@@ -1588,7 +1588,7 @@ The test programs must return an exit status of 0 if the test is successful and 
 Clickable actions for the test examiner are used within the workshop instructions to trigger the verification checks.
 You can configure them to start when the page of the workshop instructions is loaded.
 
-## <a id="enable-session-img-reg"></a> Enabling session image registry
+##  Enabling session image registry
 
 Workshops using tools such as `kpack` or `tekton` and which need a place to push container images
 when built can enable a container image registry. A separate registry is deployed for each workshop
@@ -1690,7 +1690,7 @@ To use any of the variables as data variables in workshop content, use the same 
 name but in lowercase: `registry_host`, `registry_auth_file`, `registry_username`,
 `registry_password` and `registry_secret`.
 
-## <a id="enable-ability-use-docker"></a> Enabling ability to use Docker
+##  Enabling ability to use Docker
 
 To build container images in a workshop using `docker`, first enable
 it. Each workshop session is provided with its own separate Docker daemon instance running in
@@ -1770,7 +1770,7 @@ If it uses a local tool to access the socket connection for the Docker daemon di
 The Docker daemon is only available from within the workshop session and cannot be accessed outside
 of the pod by any tools deployed separately to Kubernetes.
 
-## <a id="enable-webdav-access"></a> Enabling WebDAV access to files
+##  Enabling WebDAV access to files
 
 You can access or update local files within the workshop session from the terminal command line or editor of the workshop dashboard.
 The local files reside in the file system of the container the workshop session is running in.
@@ -1832,7 +1832,7 @@ standalone WebDAV client, such as [CyberDuck](https://cyberduck.io/).
 
 Using WebDAV can make it easier to transfer files to or from the workshop session.
 
-## <a id="customize-terminal-layout"></a> Customizing the terminal layout
+##  Customizing the terminal layout
 
 By default a single terminal is provided in the web browser when accessing the workshop.
 If required, you can enable alternate layouts which provide additional terminals.
@@ -1869,7 +1869,7 @@ it is a required field when including the section.
 
 If you don't want a terminal displayed and also want to deactivate the ability to create terminals from the drop-down menu, set `enabled` to `false`.
 
-## <a id="add-custom-dashboard-tabs"></a> Adding custom dashboard tabs
+##  Adding custom dashboard tabs
 
 Exposed applications, external sites and additional terminals, can be given their own custom
 dashboard tab. This is done by specifying the list of dashboard panels and the target URL:
